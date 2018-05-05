@@ -24,9 +24,9 @@ import time
 
 CWP = 'E:/Users/Karlo/Race Department/Programs/F1-1998-Season-Mod'  # temp !
 
-SLIDER_TITLE_1 = "     Welcome to\n     F1 1998 Mod Setup"
+SLIDER_TITLE_1 = "             Welcome to\n       F1 1998 Mod Setup"
 
-SLIDER_TITLE_2 = "            Path Input"
+SLIDER_TITLE_2 = "               Path Input"
 
 SLIDER_TITLE_3 = "    Confirm Installation"
 
@@ -41,139 +41,145 @@ more by selecting 'Install somewhere else...'."""
 class GUI(wx.Frame):
     
     def __init__(self, Parent, Title):
-        # super(GUI, self).__init__(Parent, title=Title, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER, size=(573, 450))
-        super(GUI, self).__init__(Parent, title=Title, size=(573, 450))
+        super(GUI, self).__init__(Parent, title=Title, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER, size=(600, 450))
+        # super(GUI, self).__init__(Parent, title=Title, size=(600, 450))
             
-        self.GetPanel()
+        self.MainPanel = self.GetMainPanel('#4f5049')
         
-        self.FrameOne()
+        self.CreateContainers()
         
-        #self.SetMinSize((573, 450))
-        #self.SetMaxSize((573, 450))
+        self.MainFrame()
+        
+        self.SetMinSize((600, 450))
+        self.SetMaxSize((600, 450))
         self.Centre()
-        self.Show()    
+        self.Show()
 
-    def FrameOne(self):
-        self.GetMainSizers()
-        self.GetSubSizers()
+    def MainFrame(self):        
+        # IMAGE
+        self.CreateModImage()        
+        # IMAGE
         
-        self.CreateModImage()
+        # TITLE
+        self.TitleBox = wx.BoxSizer(wx.HORIZONTAL)
         self.CreateSliderTitle(SLIDER_TITLE_1)
+        self.TitleContainer.SetSizer(self.TitleBox)
+        # TITLE
+        
+        # INFO
+        self.InfoBox = wx.BoxSizer(wx.HORIZONTAL)
         self.CreateInfoText(MESSAGE_INFO_1)
+        self.InteractiveContainer.SetSizer(self.InfoBox)
+        # INFO
+        
+        # BUTTONS + LINE
+        self.BottomGrid = wx.GridBagSizer(5, 5)
+        self.BottomBox = wx.BoxSizer(wx.HORIZONTAL)
         self.CreateLine()
         self.CreateNextButton("F2")
-        self.CreateCloseButton()
+        self.CreateCloseButton()        
+        self.BottomGrid.AddGrowableCol(0, 1)
+        self.BottomGrid.AddGrowableCol(1, 0)
+        self.BottomGrid.AddGrowableCol(2, 0)
+        self.BottomGrid.AddGrowableCol(3, 0)
+        self.BottomGrid.AddGrowableCol(4, 0)
+        self.BottomBox.Add(self.BottomGrid, proportion=1)
+        self.BottomContainer.SetSizer(self.BottomBox)
+        print(self.BottomGrid.GetChildren())
+        print(self.BottomBox.GetChildren())
+        # BUTTONS + LINE
         
-        self.MainGrid.AddGrowableCol(4, 1)
+    def CreateContainers(self):
+        self.ImageContainer = wx.Panel(self.MainPanel)
+        self.ImageContainer.SetBackgroundColour('#ededed')
         
-        self.SetSubToMain()
-        self.SetBoxToPanel()
+        self.TitleContainer = wx.Panel(self.MainPanel)
+        self.TitleContainer.SetBackgroundColour('#ededed')
         
-    def FrameTwo(self):
-        self.GetMainSizers()
-        self.GetSubSizers()
+        self.InteractiveContainer = wx.Panel(self.MainPanel)
+        self.InteractiveContainer.SetBackgroundColour('#ededed')
         
-        self.CreateModImage()
-        self.CreateSliderTitle(SLIDER_TITLE_2)
-        self.CreateDirInputBox(MESSAGE_INFO_2)
-        self.CreateLine()
-        self.CreateNextButton("F3")
-        self.CreateCloseButton()
-        self.CreateBackButton("F1")
+        self.BottomContainer = wx.Panel(self.MainPanel)
+        self.BottomContainer.SetBackgroundColour('#ededed')
         
-        self.MainGrid.AddGrowableCol(4, 1)
-        
-        self.SetSubToMain()
-        self.SetBoxToPanel()
-        
-    def FrameThree(self):
-        self.GetMainSizers()
-        self.GetSubSizers()
-        
-        self.CreateModImage()
-        self.CreateSliderTitle(SLIDER_TITLE_3)
-        self.CreateConfInstBox(MESSAGE_INFO_1, "")
-        self.CreateLine()
-        self.CreateNextButton("F4")
-        self.CreateCloseButton()
-        self.CreateBackButton("F2")
-        
-        self.SetSubToMain()
-        self.SetBoxToPanel()
-        
-        
-
-    def GetPanel(self):
-        self.Panel = wx.Panel(self)
-        
-    def GetMainSizers(self):
-        self.MainBox = wx.BoxSizer(wx.VERTICAL)
         self.MainGrid = wx.GridBagSizer(5, 5)
+        self.MainBox = wx.BoxSizer(wx.VERTICAL)
         
-    def GetSubSizers(self):
-        self.SubBox = wx.BoxSizer(wx.HORIZONTAL)
-        self.SubGrid = wx.GridBagSizer(20, 10)
+        self.MainGrid.Add(self.ImageContainer, pos=(0, 0), span=(7, 2), flag=wx.EXPAND)
+        self.MainGrid.Add(self.TitleContainer, pos=(0, 2), span=(2, 3), flag=wx.EXPAND)
+        self.MainGrid.Add(self.InteractiveContainer, pos=(2, 2), span=(5, 3), flag=wx.EXPAND)
+        self.MainGrid.Add(self.BottomContainer, pos=(7, 0), span=(1, 5), flag=wx.EXPAND)
+        
+        self.MainGrid.AddGrowableRow(0, 0)
+        self.MainGrid.AddGrowableRow(1, 0)
+        self.MainGrid.AddGrowableRow(2, 1)
+        self.MainGrid.AddGrowableRow(3, 1)
+        self.MainGrid.AddGrowableRow(4, 1)
+        self.MainGrid.AddGrowableRow(5, 1)
+        self.MainGrid.AddGrowableRow(6, 1)
+        self.MainGrid.AddGrowableRow(7, 0)
+        
+        self.MainGrid.AddGrowableCol(0, 0)
+        self.MainGrid.AddGrowableCol(1, 0)
+        self.MainGrid.AddGrowableCol(2, 1)
+        self.MainGrid.AddGrowableCol(3, 1)
+        self.MainGrid.AddGrowableCol(4, 1)
+        
+        self.MainBox.Add(self.MainGrid, proportion=1, flag=wx.ALL|wx.EXPAND, border=5)
+        
+        self.MainPanel.SetSizer(self.MainBox)
 
-    def SetSubToMain(self):
-        self.SubBox.Add(self.SubGrid, flag=wx.ALL, border=20)
-        self.MainGrid.Add(self.SubBox, pos=(1, 2), span=(3, 5))
+    def GetMainPanel(self, BG=None):
+        Panel = wx.Panel(self)
+        if not BG == None:
+            Panel.SetBackgroundColour(BG)
+        return Panel
         
-    def SetBoxToPanel(self):
-        self.MainBox.Add(self.MainGrid, proportion=1, flag=wx.ALL, border=10)
-        self.Panel.SetSizerAndFit(self.MainBox)
-        
-    def ResetMainGrid(self):
-        for Item in range(len(self.MainGrid.GetChildren())):
-            Window = self.MainGrid.GetItem(0).GetWindow()
-            print(Window)
-            if not Window == None:
-                Window.Destroy()
-            
-            # self.MainGrid.GetItem(0).GetWindow().Destroy()
-            
-    def ResetSubGrid(self):
-        for Item in range(len(self.SubGrid.GetChildren())):
-            Window = self.SubGrid.GetItem(0).GetWindow()
-            print(Window)
-            Window.Destroy()
-            
-            # self.SubGrid.GetItem(0).GetWindow().Destroy()
-        
-    def CreateModImage(self):
-        Image = wx.StaticBitmap(self.Panel, bitmap=wx.Bitmap(u'{}{}'.format(CWP, '/installer/gui/image.bmp')))
-        self.MainGrid.Add(Image, pos=(0, 0), span=(4, 2))
+    def CreateModImage(self):        
+        Image = wx.StaticBitmap(self.ImageContainer, bitmap=wx.Bitmap(u'{}{}'.format(CWP, '/installer/gui/image.bmp')))        
         
     def CreateSliderTitle(self, Label):
         Font = wx.Font(18, wx.DEFAULT, wx.ITALIC, wx.BOLD)
-        Title = wx.StaticText(self.Panel, label=Label)
+        
+        Title = wx.StaticText(self.TitleContainer, label=Label)
         Title.SetFont(Font)
-        self.MainGrid.Add(Title, pos=(0, 2), span=(0, 4))
+        
+        self.TitleBox.Add(Title)
         
     def CreateInfoText(self, Label):
-        Text = wx.StaticText(self.Panel, label=Label)
-        self.SubGrid.Add(Text, pos=(0, 0))
+        Text = wx.StaticText(self.InteractiveContainer, label=Label)
+        
+        self.InfoBox.Add(Text, flag=wx.ALL, border=20)
         
     def CreateLine(self):
-        Line = wx.StaticLine(self.Panel)
-        self.MainGrid.Add(Line, pos=(4, 0), span=(0, 7), flag=wx.EXPAND)
+        Line = wx.StaticLine(self.BottomContainer)
+        
+        self.BottomGrid.Add(Line, pos=(0, 0), span=(0, 5), flag=wx.EXPAND)
         
     def CreateNextButton(self, Win):
-        Button = wx.Button(self.Panel, label="Next >>>", size=(100, 30))
-        self.MainGrid.Add(Button, pos=(5, 3))
+        Button = wx.Button(self.BottomContainer, label="Next >>>", size=(100, 30))
+        
+        self.BottomGrid.Add(Button, pos=(1, 3), flag=wx.RIGHT, border=5)
+        
         self.Bind(wx.EVT_BUTTON, self.GetNextWindowDict(Win), Button)
         
     def CreateCloseButton(self):
-        Button = wx.Button(self.Panel, label="Close", size=(100, 30))
-        self.MainGrid.Add(Button, pos=(5, 4))
+        Button = wx.Button(self.BottomContainer, label="Close", size=(100, 30))
+        
+        self.BottomGrid.Add(Button, pos=(1, 4), flag=wx.ALIGN_RIGHT|wx.RIGHT, border=10)
+        
         self.Bind(wx.EVT_BUTTON, self.OnClose, Button)
         
     def CreateBackButton(self, Win):
-        Button = wx.Button(self.Panel, label="<<< Back", size=(100, 30))
-        self.MainGrid.Add(Button, pos=(5, 0))
+        Button = wx.Button(self.BottomContainer, label="<<< Back", size=(100, 30))
+        print(self.BottomGrid.GetChildren())
+        self.BottomGrid.Add(Button, pos=(1, 0), flag=wx.LEFT, border=10)
+        print(self.BottomGrid.GetChildren())
         self.Bind(wx.EVT_BUTTON, self.GetBackWindowDict(Win), Button)
         
     def CreateDirInputBox(self, Label):        
         Font = wx.Font(10, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
+        
         Text = wx.StaticText(self.Panel, label=Label)
         EEALabel = wx.StaticText(self.Panel, label="EEA:")
         EEALabel.SetFont(Font)
@@ -210,14 +216,30 @@ class GUI(wx.Frame):
         self.SubGrid.Add(Text, pos=(0, 0), span=(0, 2))
         self.SubGrid.Add(InstText, pos=(1, 0), span=(2, 2))
         self.SubGrid.Add(CheckButton, pos=(3, 0))
+
         
     def OnClose(self, Evt):
         self.Close()
     
-    def OnNextF2(self, Evt):
-        self.ResetMainGrid()        
-        self.ResetSubGrid()
-        self.FrameTwo()
+    def OnNextF2(self, Evt):        
+        # TITLE
+        self.ResetSizer(self.TitleBox)
+        self.TitleBox = wx.BoxSizer(wx.HORIZONTAL)
+        self.CreateSliderTitle(SLIDER_TITLE_2)
+        self.TitleContainer.SetSizer(self.TitleBox)
+        # TITLE
+        
+        # BACK BUTTON
+        # self.ResetSizer(self.BottomGrid)
+        self.BottomBox = wx.BoxSizer(wx.HORIZONTAL)
+        print(self.BottomGrid.GetChildren())
+        print(self.BottomBox.GetChildren())
+        # self.CreateBackButton("F1")
+        # self.BottomBox.Add(self.BottomGrid, proportion=1)
+        # self.BottomContainer.SetSizer(self.BottomBox)
+        
+        # self.CreateNextButton("F3")
+        # BACK BUTTON
         
     def OnNextF3(self, Evt):
         self.ResetMainGrid()
@@ -246,6 +268,13 @@ class GUI(wx.Frame):
         elif Key == "F2":
             return self.OnBackF2
 
+    def ResetSizer(self, Sizer):
+        for Item in range(len(Sizer.GetChildren())):
+            Window = Sizer.GetItem(0).GetWindow()
+            # print(Window)
+            if not Window == None:
+                Window.Destroy()
+    
 
             
 if __name__ == '__main__':
